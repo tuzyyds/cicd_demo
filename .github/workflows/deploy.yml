@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+     # 下载源码 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # 构建
+      - name: Build
+        uses: actions/setup-node@master
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run build
+
+      # 部署  
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          branch: gh-pages
+          github_token: ${{ secrets.CICD_DEMO }}
+          publish_dir: ./dist
+          user_name: github-actions
+          user_email: github-actions@users.noreply.github.com
+          commit_message: 自动部署
