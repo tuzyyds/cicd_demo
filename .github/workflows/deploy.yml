@@ -20,6 +20,24 @@ jobs:
       - run: npm install
       - run: npm run build
 
+      # 创建 404 页面
+      - name: Create 404 page
+        run: |
+          echo '<!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Redirecting...</title>
+            </head>
+            <body>
+              <script>
+                const path = window.location.pathname;
+                const newPath = "/vite-project" + path;
+                window.location.href = newPath;
+              </script>
+            </body>
+          </html>' > dist/404.html
+
       # 部署  
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
